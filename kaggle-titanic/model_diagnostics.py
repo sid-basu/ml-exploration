@@ -258,7 +258,7 @@ def model_diagnostics_skf(preds_list, preds_binary_list, y_list):
 
 def summarise_continuous_feature(df_input, column, outcome, n_quantiles = 10):
     
-    group_assignments, bins = pd.qcut(df_input[column], q = n_quantiles, retbins = True)
+    group_assignments, bins = pd.qcut(df_input[column], q = n_quantiles, retbins = True, duplicates = 'drop')
     df_input['quantile'] = group_assignments
     #old line of code cutting data into quantiles
     #pd.cut(df['Age'], bins, labels = np.arange(10))  
