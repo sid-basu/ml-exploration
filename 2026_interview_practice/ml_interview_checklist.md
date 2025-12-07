@@ -16,6 +16,9 @@
 - [ ] Check data types (numerical vs categorical)
 - [ ] Look for outliers (box plots, describe())
 - [ ] Compute basic correlations with target
+  - Numeric, just correlation df['column1'].corr(df['column2'])
+  - Categorical, do chi square
+  - chi2, p_val = chi2_contingency(pd.crosstab(df['cat1'], df['cat2']))[:2]
 - [ ] Check for duplicates
 
 ## 3. Train/Test/Validation Split (2 min)

@@ -14,7 +14,7 @@
 - Data Exploration
 	- Check shape, missing values, numerical vs categorical
 	- Examine target distribution
-	- Look for outliers
+	- Look for outliers describe()
 	- Basic correlations with target
 
 - Train / test / validation
