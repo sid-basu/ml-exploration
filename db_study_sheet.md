@@ -46,10 +46,12 @@ df['gap_minutes'] = df['gap'] / pd.Timedelta(minutes=1)     # equivalent
 df['too_long'] = df['gap'] > pd.Timedelta(minutes=30)
 ```
 
-## Sorting (Always Do This First)
+## Notes from my experience
 
 ```python
 df = df.sort_values(['user_id', 'timestamp']).copy()
+df['login_date_gap'].isna()
+df['row_num'] = df.groupby('user_id').cumcount() # needs to be sorted first
 ```
 
 **Always sort before:** rolling, shift, diff, cumsum.
@@ -72,6 +74,11 @@ df['rolling_avg'] = (
     .transform(lambda x: x.shift(1).rolling(5, min_periods=1).mean())
 )
 ```
+
+## window function
+```
+ df['max_user_date'] = df.groupby('user_id')['login_date'].transform('max')
+ ```
 
 ## Shift (Lag / Lead)
 
