@@ -49,9 +49,13 @@ df['too_long'] = df['gap'] > pd.Timedelta(minutes=30)
 ## Notes from my experience
 
 ```python
+# problem 6
 df = df.sort_values(['user_id', 'timestamp']).copy()
 df['login_date_gap'].isna()
 df['row_num'] = df.groupby('user_id').cumcount() # needs to be sorted first
+# problem 7
+.replace(0, float('nan')) #replace a column with 0's with nan (so you don't divide by 0)
+et['spike_duration_weeks'] = (pd.to_datetime(ret['start_week']) - pd.to_datetime(ret['end_week'])).dt.days // 7
 ```
 
 **Always sort before:** rolling, shift, diff, cumsum.
