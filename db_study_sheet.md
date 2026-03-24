@@ -49,13 +49,37 @@ df['too_long'] = df['gap'] > pd.Timedelta(minutes=30)
 ## Notes from my experience
 
 ```python
+# from before (constant to pandas)
+.query("first_offer_month < @max_offer_month")
+
 # problem 6
 df = df.sort_values(['user_id', 'timestamp']).copy()
 df['login_date_gap'].isna()
 df['row_num'] = df.groupby('user_id').cumcount() # needs to be sorted first
 # problem 7
-.replace(0, float('nan')) #replace a column with 0's with nan (so you don't divide by 0)
-et['spike_duration_weeks'] = (pd.to_datetime(ret['start_week']) - pd.to_datetime(ret['end_week'])).dt.days // 7
+df['is_spike_lag'] = df.groupby(['job_type'])['is_spike'].shift().fillna(False).astype(bool) 
+
+#replace a column with 0's with nan (so you don't divide by 0)
+ret['pct_consumed'] = ret['cumulative_spend'] / ret['budget'].replace(0, float('nan'))
+# in sql this is
+nullif(budget, 0)
+
+
+ret['spike_duration_weeks'] = (pd.to_datetime(ret['start_week']) - pd.to_datetime(ret['end_week'])).dt.days // 7
+
+# first day of month
+df['spend_month'] = pd.to_datetime(df['spend_date']).dt.to_period('M').dt.to_timestamp()
+df['spend_month'] = pd.to_datetime(df['spend_date']).dt.to_period('M').dt.to_timestamp().dt.strftime('%Y-%m-%d')
+.shift / .cumsum can just be done without transform, .sum needs a .transform('sum')
+
+# first row meeting condition via groupby
+ret_final = (
+    ret
+    .sort_values(['workspace_id', 'month', 'spend_date'])
+    .groupby(['workspace_id', 'month'])
+    .first()
+    .reset_index()
+)
 ```
 
 **Always sort before:** rolling, shift, diff, cumsum.
