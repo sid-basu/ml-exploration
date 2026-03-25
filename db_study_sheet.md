@@ -80,6 +80,15 @@ ret_final = (
     .first()
     .reset_index()
 )
+
+Can also do .nth(0) and .nth(-1)
+
+# count distinct via groupby
+df.groupby('user_id').agg(unique_steps = ('event_type', 'nunique'))
+
+# create a boolean query
+df_steps['completed_all_steps'] = (df_steps['unique_steps'] == 5)
+
 ```
 
 **Always sort before:** rolling, shift, diff, cumsum.
