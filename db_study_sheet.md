@@ -89,6 +89,12 @@ df.groupby('user_id').agg(unique_steps = ('event_type', 'nunique'))
 # create a boolean query
 df_steps['completed_all_steps'] = (df_steps['unique_steps'] == 5)
 
+# months since signup
+df_full['activity_month'] = df_full['activity_date'].dt.to_period('M').dt.to_timestamp()
+df_full['signup_month'] = df_full['signup_date'].dt.to_period('M').dt.to_timestamp()
+
+df_full['periods_since_signup'] = (df_full['activity_month'].dt.to_period('M') - df_full['signup_month'].dt.to_period('M')).apply(lambda x: x.n)
+
 ```
 
 **Always sort before:** rolling, shift, diff, cumsum.
